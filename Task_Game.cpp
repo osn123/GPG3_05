@@ -5,6 +5,7 @@
 #include  "Task_Game.h"
 #include  "Task_GameBG.h"
 #include  "Task_Ending.h"
+#include  "Task_EventEngine.h"
 
 
 namespace  Game
@@ -61,6 +62,12 @@ namespace  Game
 		if (inp.ST.down) {
 			//©g‚ÉÁ–Å—v¿
 			this->Kill();
+		}
+		else if (inp.SE.down) {
+			//
+			if (auto ev = EventEngine::Object::Create_Mutex()) {
+				ev->Set("./data/event/event0000.txt");
+			}
 		}
 	}
 	//-------------------------------------------------------------------
