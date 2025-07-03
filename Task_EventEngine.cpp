@@ -4,6 +4,7 @@
 #include  "MyPG.h"
 #include  "Task_EventEngine.h"
 #include  "Task_Ev_Message.h"
+#include  "Task_Ev_Image.h"
 
 namespace  EventEngine
 {
@@ -167,7 +168,7 @@ namespace  EventEngine
 		{
 			Ev_Message::Object::CreateOrReset(ss);
 		}
-		else if (hs_ == "evimg"){	}
+		else if (hs_ == "evimg"){ Ev_Image::Object::CreateOrReset(ss); }
 		else if (hs_ == "if") {}
 		else if (hs_ == "flag") {}
 		else if (hs_ == "label") {}

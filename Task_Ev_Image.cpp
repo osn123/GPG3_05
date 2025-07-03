@@ -1,27 +1,25 @@
 //-------------------------------------------------------------------
-//ゲーム本編
+//
 //-------------------------------------------------------------------
 #include  "MyPG.h"
-#include  "Task_Game.h"
-#include  "Task_GameBG.h"
-#include  "Task_Ending.h"
-#include  "Task_EventEngine.h"
+//#include  "MyLib.h"
 #include  "Task_Ev_Image.h"
 
-
-namespace  Game
+namespace  Ev_Image
 {
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -34,10 +32,13 @@ namespace  Game
 		this->res = Resource::Create();
 
 		//★データ初期化
-		
+
+		this->render2D_Priority[1] = 0.2f;
+		this->pos = ML::Vec2(0, 0);
+		this->drawBase = ML::Box2D(0, 0, 0, 0);
+		this->src = ML::Box2D(0, 0, 0, 0);
+
 		//★タスクの生成
-		//背景タスク
-		auto  bg = GameBG::Object::Create(true);
 
 		return  true;
 	}
@@ -46,11 +47,9 @@ namespace  Game
 	bool  Object::Finalize()
 	{
 		//★データ＆タスク解放
-		ge->KillAll_G("本編");
-
+		this->img.reset();
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
-			auto  next = Ending::Object::Create(true);
 		}
 
 		return  true;
@@ -59,22 +58,60 @@ namespace  Game
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		auto inp = ge->in1->GetState( );
-		if (inp.ST.down) {
-			//自身に消滅要請
-			this->Kill();
-		}
-		else if (inp.SE.down) {
-			//
-			if (auto ev = EventEngine::Object::Create_Mutex()) {
-				ev->Set("./data/event/event0000.txt");
-			}
-		}
+
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+		ML::Box2D draw = this->drawBase;
+		draw.Offset(this->pos);
+		this->img->Draw(draw, this->src);
+
+	}
+
+
+
+	void Object::CreateOrReset(stringstream& ss_) {
+		//
+		string taskName;
+		ss_ >> taskName;
+
+		//
+		auto p = ge->GetTask<Object>("イベント画像", taskName);
+		//
+		if (nullptr == p) {
+			p = Object::Create(true);
+			p->Set(taskName, ss_);
+		}
+		//
+		else
+		{
+			p->Set(taskName, ss_);
+		}
+	}
+	void Object::Set(const string& taskName_, stringstream& ss_)
+	{
+		//
+		string filePath;
+		ss_ >> filePath;
+
+		//
+		if (filePath == "off")
+		{
+			this->Kill();
+			return;
+		}
+
+		this->name = taskName_;
+		//
+		this->img = DG::Image::Create(filePath);
+		//
+		//ML::Point s = this->img->Size();
+		ML::Point s = this->img->Size();
+		this->drawBase = ML::Box2D(0, 0, s.x, s.y);
+		this->src = ML::Box2D(0, 0, s.x, s.y);
+
 	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
@@ -89,6 +126,7 @@ namespace  Game
 			ob->me = ob;
 			if (flagGameEnginePushBack_) {
 				ge->PushBack(ob);//ゲームエンジンに登録
+
 			}
 			if (!ob->B_Initialize()) {
 				ob->Kill();//イニシャライズに失敗したらKill

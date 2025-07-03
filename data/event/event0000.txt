@@ -1,1 +1,16 @@
-æ˜Žæ—¥å¤©æ°—ã«ã—ã¦ãŠãã‚Œ
+evimg>PL_A,./data/image/ƒvƒŒƒCƒ„—§‚¿‚¦i’Êíj.png,L
+msg>’Êí˜g,100,‚±‚ñ‚É‚¿‚í¢ŠEI
+msg>’Êí˜g,0,–¾“ú“V‹C‚É‚µ‚Ä‚¨‚­‚ê
+evimg>PL_A,off
+msg>’Êí˜g,0,‚¨‚¶‚³‚ñ‚¶‚á‚Ë‚¥A‚¨‚Ë[‚³‚ñ‚¾II
+evimg>PL_A,./data/image/ƒvƒŒƒCƒ„—§‚¿‚¦iÎ‚¤j.png,CX
+msg>’Êí˜g,0,‚Ô‚è‘åª*‚Ô‚è‘åª*‚Ô‚è‘åª
+msg>’Êí˜g,0,”Æl‚Í‚¨‘O‚¾B
+evimg>PL_A,./data/image/ƒvƒŒƒCƒ„—§‚¿‚¦i“{‚éj.png,RXY
+msg>’Êí˜g,0,ƒTƒCƒ“AƒRƒTƒCƒ“Aƒ^ƒ“ƒOƒXƒeƒ“
+msg>’Êí˜g,0,ƒ^ƒR{ƒCƒJH
+msg>’Êí˜g,0,ƒNƒŠ[ƒ`ƒƒ[
+evimg>PL_A,off
+msg>’Êí˜g,0,‚±‚ê‚É‚ÄI—¹
+msg>’Êí˜g,0,off
+end>
