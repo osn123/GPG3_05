@@ -1,7 +1,9 @@
 evimg>PL_A,./data/image/プレイヤ立ちえ（通常）.png,L
+evimg>PL_B,./data/image/プレイヤ立ちえ（通常）.png,RX
 msg>通常枠,100,こんにちわ世界！
 msg>通常枠,0,明日天気にしておくれ
 evimg>PL_A,off
+evimg>PL_B,off
 msg>通常枠,0,おじさんじゃねぇ、おねーさんだ！！
 evimg>PL_A,./data/image/プレイヤ立ちえ（笑う）.png,CX
 msg>通常枠,0,ぶり大根*ぶり大根*ぶり大根

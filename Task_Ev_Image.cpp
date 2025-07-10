@@ -4,6 +4,7 @@
 #include  "MyPG.h"
 //#include  "MyLib.h"
 #include  "Task_Ev_Image.h"
+#include "GameEngine_Ver3_83.h"
 
 namespace  Ev_Image
 {
@@ -107,66 +108,102 @@ namespace  Ev_Image
 		//
 		this->img = DG::Image::Create(filePath);
 		//
+		enum class XPos { Left, Center, Right };
+		XPos	xPos = XPos::Left;
+		bool	xRevers = false;
+		bool	yRevers = false;
+		string posAndRev;
+		ss_ >> posAndRev;
+		//
+		if (string::npos != posAndRev.find("L")) { xPos = XPos::Left; }
+		if (string::npos != posAndRev.find("R")) { xPos = XPos::Right; }
+		if (string::npos != posAndRev.find("C")) { xPos = XPos::Center; }
+		if (string::npos != posAndRev.find("X")) { xRevers = true; }
+		else { xRevers = false; }
+		if (string::npos != posAndRev.find("Y")) { yRevers = true; }
+		else { yRevers = false; }
+		//
 		//ML::Point s = this->img->Size();
-		ML::Point s = this->img->Size();
+		POINT s = this->img->Size();
 		this->drawBase = ML::Box2D(0, 0, s.x, s.y);
 		this->src = ML::Box2D(0, 0, s.x, s.y);
+		//
+		if (XPos::Left == xPos)
+		{
+			this->pos.x = 0;
+		}
+		else if (XPos::Right == xPos)
+		{
+			this->pos.x = (float)ge->screen2DWidth - s.x;
+		}
+		else
+		{
+			this->pos.x = (ge->screen2DWidth - s.x) / 2.0f;
+		}
+		//
+		if (true == xRevers) {
+			this->src.x = s.x; this->src.w = -s.x;
+		}
+		if (true == yRevers) {
+			this->src.y = s.y; this->src.h = -s.y;
+		}
 
 	}
 
-	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-	//以下は基本的に変更不要なメソッド
-	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-	//-------------------------------------------------------------------
-	//タスク生成窓口
-	Object::SP  Object::Create(bool  flagGameEnginePushBack_)
-	{
-		Object::SP  ob = Object::SP(new  Object());
-		if (ob) {
-			ob->me = ob;
-			if (flagGameEnginePushBack_) {
-				ge->PushBack(ob);//ゲームエンジンに登録
 
-			}
-			if (!ob->B_Initialize()) {
-				ob->Kill();//イニシャライズに失敗したらKill
-			}
-			return  ob;
+//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//以下は基本的に変更不要なメソッド
+//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+//-------------------------------------------------------------------
+//タスク生成窓口
+Object::SP  Object::Create(bool  flagGameEnginePushBack_)
+{
+	Object::SP  ob = Object::SP(new  Object());
+	if (ob) {
+		ob->me = ob;
+		if (flagGameEnginePushBack_) {
+			ge->PushBack(ob);//ゲームエンジンに登録
+
 		}
-		return nullptr;
-	}
-	//-------------------------------------------------------------------
-	bool  Object::B_Initialize()
-	{
-		return  this->Initialize();
-	}
-	//-------------------------------------------------------------------
-	Object::~Object() { this->B_Finalize(); }
-	bool  Object::B_Finalize()
-	{
-		auto  rtv = this->Finalize();
-		return  rtv;
-	}
-	//-------------------------------------------------------------------
-	Object::Object() {	}
-	//-------------------------------------------------------------------
-	//リソースクラスの生成
-	Resource::SP  Resource::Create()
-	{
-		if (auto sp = instance.lock()) {
-			return sp;
+		if (!ob->B_Initialize()) {
+			ob->Kill();//イニシャライズに失敗したらKill
 		}
-		else {
-			sp = Resource::SP(new  Resource());
-			if (sp) {
-				sp->Initialize();
-				instance = sp;
-			}
-			return sp;
-		}
+		return  ob;
 	}
-	//-------------------------------------------------------------------
-	Resource::Resource() {}
-	//-------------------------------------------------------------------
-	Resource::~Resource() { this->Finalize(); }
+	return nullptr;
+}
+//-------------------------------------------------------------------
+bool  Object::B_Initialize()
+{
+	return  this->Initialize();
+}
+//-------------------------------------------------------------------
+Object::~Object() { this->B_Finalize(); }
+bool  Object::B_Finalize()
+{
+	auto  rtv = this->Finalize();
+	return  rtv;
+}
+//-------------------------------------------------------------------
+Object::Object() {	}
+//-------------------------------------------------------------------
+//リソースクラスの生成
+Resource::SP  Resource::Create()
+{
+	if (auto sp = instance.lock()) {
+		return sp;
+	}
+	else {
+		sp = Resource::SP(new  Resource());
+		if (sp) {
+			sp->Initialize();
+			instance = sp;
+		}
+		return sp;
+	}
+}
+//-------------------------------------------------------------------
+Resource::Resource() {}
+//-------------------------------------------------------------------
+Resource::~Resource() { this->Finalize(); }
 }
