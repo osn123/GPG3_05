@@ -59,5 +59,11 @@ namespace  EventEngine
 		bool ReadLine(string& lineT_);
 		//
 		bool Execute(string& hs_, string& ds_);
+		//
+		//
+		bool EventFlag(stringstream& ss_);
+		//
+		bool If(stringstream& ss_);
+
 	};
 }

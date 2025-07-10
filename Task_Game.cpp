@@ -34,7 +34,7 @@ namespace  Game
 		this->res = Resource::Create();
 
 		//★データ初期化
-		
+		ge->evFlags.clear();//
 		//★タスクの生成
 		//背景タスク
 		auto  bg = GameBG::Object::Create(true);
@@ -67,7 +67,8 @@ namespace  Game
 		else if (inp.SE.down) {
 			//
 			if (auto ev = EventEngine::Object::Create_Mutex()) {
-				ev->Set("./data/event/event0000.txt");
+				//ev->Set("./data/event/event0000.txt");
+				ev->Set("./data/event/event0001.txt");
 			}
 		}
 	}

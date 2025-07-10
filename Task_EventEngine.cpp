@@ -169,8 +169,8 @@ namespace  EventEngine
 			Ev_Message::Object::CreateOrReset(ss);
 		}
 		else if (hs_ == "evimg"){ Ev_Image::Object::CreateOrReset(ss); }
-		else if (hs_ == "if") {}
-		else if (hs_ == "flag") {}
+		else if (hs_ == "if") { this->If(ss); }
+		else if (hs_ == "flag") { this->EventFlag(ss); }
 		else if (hs_ == "label") {}
 		else  {
 			return false;

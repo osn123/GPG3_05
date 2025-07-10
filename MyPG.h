@@ -75,6 +75,8 @@ namespace  MyPG
 		XI::Mouse::SP  mouse;
 		XI::GamePad::SP  in1, in2, in3, in4;	//éÊÇËçáÇ¶Ç∏ÇSñ{
 
+		map<string, float>	evFlags;//
+
 	//----------------------------------------------
 	};
 }

@@ -144,6 +144,7 @@
     <ClCompile Include="Task_Title.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="XI2018_Ver1_0.cpp" />
+    <ClCompile Include="Task_EventEngine_System.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DG2014\DG2014_DGObject.h" />
