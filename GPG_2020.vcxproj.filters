@@ -100,6 +100,9 @@
     <ClCompile Include="Task_EventEngine_System.cpp">
       <Filter>MyPG\Task</Filter>
     </ClCompile>
+    <ClCompile Include="Task_Ev_FadeInOut.cpp">
+      <Filter>MyPG\Task</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine_Ver3_83.h">
@@ -169,6 +172,9 @@
       <Filter>MyPG\Task</Filter>
     </ClInclude>
     <ClInclude Include="Task_Ev_Image.h">
+      <Filter>MyPG\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task_Ev_FadeInOut.h">
       <Filter>MyPG\Task</Filter>
     </ClInclude>
   </ItemGroup>

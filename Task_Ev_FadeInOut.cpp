@@ -2,25 +2,41 @@
 //
 //-------------------------------------------------------------------
 #include  "MyPG.h"
-#include  "Task_EventEngine.h"
-#include  "Task_Ev_Message.h"
-#include  "Task_Ev_Image.h"
 #include  "Task_Ev_FadeInOut.h"
 
-namespace  EventEngine
+namespace  Ev_FadeInOut
 {
-	Object::WP Object::instance; //
 	Resource::WP  Resource::instance;
 	//-------------------------------------------------------------------
 	//リソースの初期化
 	bool  Resource::Initialize()
 	{
+		//this->img[0] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[1] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[2] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[3] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[4] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[5] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[6] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[7] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[8] = DG::Image::Create("./data/image/MessageF.png");
+		//this->img[9] = DG::Image::Create("./data/image/MessageF.png");
+		//
+		//this->font[0] = DG::Font::Create("HG丸ｺﾞｼｯｸM-PRO", 8, 16);
+		//this->font[1] = DG::Font::Create("HG丸ｺﾞｼｯｸM-PRO", 12, 24);
+		//this->font[2] = DG::Font::Create("HG丸ｺﾞｼｯｸM-PRO", 16, 32);
 		return true;
 	}
 	//-------------------------------------------------------------------
 	//リソースの解放
 	bool  Resource::Finalize()
 	{
+		//for (int i = 0; i < _countof(this->img); i++) {
+		//	this->img[i].reset();
+		//}
+		//for (int i = 0; i < _countof(this->font); i++) {
+		//	this->font[i].reset();
+		//}
 		return true;
 	}
 	//-------------------------------------------------------------------
@@ -33,11 +49,11 @@ namespace  EventEngine
 		this->res = Resource::Create();
 
 		//★データ初期化
+		this->render2D_Priority[1] = 0.005f;
+		this->cnt = 0;
+		this->Stop();//
 		
 		//★タスクの生成
-
-		//
-		//
 
 		return  true;
 	}
@@ -45,15 +61,8 @@ namespace  EventEngine
 	//「終了」タスク消滅時に１回だけ行う処理
 	bool  Object::Finalize()
 	{
-		//
-		//
-
 		//★データ＆タスク解放
-		if (this->evFile.is_open())
-		{
-			this->evFile.close();//
-		}
-
+		this->img.reset();
 		if (!ge->QuitFlag() && this->nextTaskCreate) {
 			//★引き継ぎタスクの生成
 		}
@@ -64,121 +73,98 @@ namespace  EventEngine
 	//「更新」１フレーム毎に行う処理
 	void  Object::UpDate()
 	{
-		if (!this->evFile)
+		if (this->mode== Mode::In)
 		{
-			this->Kill();
-		}
-		//
-		string lineText;
-		string headerText;
-		string dataText;
-		while (this->ReadLine(lineText))
-		{
-			//
-			string::size_type t = lineText.find(">");
-			headerText = lineText.substr(0, t);
-			dataText = lineText.substr(t + 1);
-			//
-			bool rtv = this->Execute(headerText, dataText);
-			//
-			if (false==rtv || BTask::State::Active!=this->CheckState())
-			{
-				break;
+			this->cnt--;//
+			if (this->cnt < 0) {
+				//
+				ge->StopAll_GN("イベント", "実行エンジン", false);
+				//
+				this->Kill();
 			}
 		}
+		if (this->mode == Mode::Out)
+		{
+			this->cnt++;//
+			if (this->cnt > 60) {
+				//
+				ge->StopAll_GN("イベント", "実行エンジン", false);
+				//
+				this->Stop();
+			}
+		}
+
+		//auto inp = ge->in1->GetState();
+		////
+		//if ((this->timeLimit!=0 && this->timeCnt>=this->timeLimit) || inp.B2.down)
+		//{
+		//	//
+		//	this->Stop();
+		//	//
+		//	ge->StopAll_GN("イベント", "実行エンジン", false);
+		//}
+		//else {
+		//	this->timeCnt++;
+		//}
 	}
 	//-------------------------------------------------------------------
 	//「２Ｄ描画」１フレーム毎に行う処理
 	void  Object::Render2D_AF()
 	{
+
+		ML::Box2D draw(0, 0, ge->screenWidth, ge->screenHeight);
+		this->img->Draw(draw, this->src,ML::Color(this->cnt/60.0f,1,1,1));
+
 	}
 
-	//
-	//
-	Object::SP Object::Create_Mutex() {
+	void Object::CreateOrFadeIn(stringstream& ss_)
+	{
 		//
-		if (auto p = instance.lock())
-		{
-			return nullptr;//
+		auto p = ge->GetTask<Object>(defGroupName, defName);
+
+		//
+		if (nullptr == p) {
+			p = Object::Create(true);
+			p->Set(ss_);
 		}
+		//
+		else {
+			p->Set(ss_);
+		}
+	}
+
+	void Object::Set(stringstream& ss_)
+	{
+		//
+		string filePath;
+		ss_ >> filePath;
+		//
+		if (filePath=="in")
+		{
+			this->mode = Mode::In;
+			this->cnt = 60;
+		}
+		//
 		else
 		{
-			p = Object::Create(true);
-			instance = p;
-			return p;
+			this->mode = Mode::Out;
+			this->cnt = 0;
+			//
+			this->img = DG::Image::Create(filePath);
+			POINT s = this->img->Size();
+			this->src = ML::Box2D(0, 0, s.x, s.y);
 		}
+
+
+		//
+		ge->StopAll_GN("イベント", "実行エンジン");
+		//
+		this->Stop(false);	
+
 	}
 
-	bool Object::Set(const string& fPath_) {
-		//
-		if (this->evFile.is_open()) {
-			this->evFile.close();
-		}
-		//
-		this->evFile.open(fPath_);
-		//
-		if (!this->evFile)
-		{
-			return false;
-		}
-		return true;
-	}
 
-	bool Object::ReadLine(string& lineT_) {
-		//
-		bool rtv = false;
-		while (getline(this->evFile,lineT_))
-		{
-			//
-			//
-			if (string::npos == lineT_.find_first_not_of(" 　")) {
-				continue;
-			}
-			//
-			if ('/'==lineT_.at(0))
-			{
-				continue;
-			}
-			//
-			if (string::npos==lineT_.find(">"))
-			{
-				continue;
-			}
-			//
-			rtv=true;
-				break;
-		}
-		return rtv;
-	}
 
-	bool Object::Execute(string& hs_, string& ds_) {
-		//
-		string::size_type t;
-		while ((t = ds_.find_first_of("(,);")) != string::npos) {
-			ds_[t] = ' ';
-		}
-		//
-		stringstream ss;
-		ss << ds_;
-		//
-		if (hs_ == "end") {
-			this->Kill();
-		}
-		//
-		else if (hs_ =="msg")
-		{
-			Ev_Message::Object::CreateOrReset(ss);
-		}
-		else if (hs_ == "evimg"){ Ev_Image::Object::CreateOrReset(ss); }
-		else if (hs_ == "if") { this->If(ss); }
-		else if (hs_ == "flag") { this->EventFlag(ss); }
-		else if (hs_ == "fade_io") { Ev_FadeInOut::Object::CreateOrFadeIn(ss); }
-		else if (hs_ == "label") {}
-		else  {
-			return false;
-		}
-		return true;
-	}
 
 	//★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 	//以下は基本的に変更不要なメソッド

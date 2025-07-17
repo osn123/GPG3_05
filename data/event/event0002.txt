@@ -1,6 +1,8 @@
+fade_io>in
 evimg>PL_A,./data/image/プレイヤ立ちえ（通常）.png,L
 flag>最初の町：町人Å + 1
 if>ev_flag,最初の町：町人Å == 1,1回目
+fade_io>./data/image/FadeImage.bmp
 if>ev_flag,最初の町：町人Å == 2,2回目
 if>ev_flag,最初の町：町人Å == 3,3回目
 if>ev_flag,最初の町：町人Å > 3,4回目

@@ -137,6 +137,7 @@
     <ClCompile Include="MyPG.cpp" />
     <ClCompile Include="Task_Ending.cpp" />
     <ClCompile Include="Task_EventEngine.cpp" />
+    <ClCompile Include="Task_Ev_FadeInOut.cpp" />
     <ClCompile Include="Task_Ev_Image.cpp" />
     <ClCompile Include="Task_Ev_Message.cpp" />
     <ClCompile Include="Task_Game.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="MyPG.h" />
     <ClInclude Include="Task_Ending.h" />
     <ClInclude Include="Task_EventEngine.h" />
+    <ClInclude Include="Task_Ev_FadeInOut.h" />
     <ClInclude Include="Task_Ev_Image.h" />
     <ClInclude Include="Task_Ev_Message.h" />
     <ClInclude Include="Task_Game.h" />

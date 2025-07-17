@@ -7,6 +7,8 @@
 #include  "Task_Ending.h"
 #include  "Task_EventEngine.h"
 #include  "Task_Ev_Image.h"
+#include  "Task_Ev_FadeInOut.h"
+
 
 
 namespace  Game
@@ -68,7 +70,7 @@ namespace  Game
 			//
 			if (auto ev = EventEngine::Object::Create_Mutex()) {
 				//ev->Set("./data/event/event0000.txt");
-				ev->Set("./data/event/event0001.txt");
+				ev->Set("./data/event/event0002.txt");
 			}
 		}
 	}
