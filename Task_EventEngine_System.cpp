@@ -2,6 +2,31 @@
 #include  "Task_EventEngine.h"
 
 namespace EventEngine {
+
+	bool Object::FileSet(stringstream& ss_) {
+		string filePath;
+		ss_ >> filePath;
+
+		return this->Set(filePath);
+	}
+
+	bool Object::Image(stringstream& ss_) {
+		string OffScreenName;
+		string filePath;
+		ss_ >> OffScreenName >> filePath;
+		DG::Image::SP img = DG::ImageManager::Get(OffScreenName);
+		if (nullptr != img) {
+			img->ReLoad(filePath);//
+		}
+		else
+		{
+			img = DG::Image::Create(filePath);
+			DG::ImageManager::Set(OffScreenName, img);
+		}
+		return true;
+	}
+
+
 	//
 	bool Object::EventFlag(stringstream& ss_) {
 		string flagName;

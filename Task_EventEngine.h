@@ -64,6 +64,9 @@ namespace  EventEngine
 		bool EventFlag(stringstream& ss_);
 		//
 		bool If(stringstream& ss_);
+		//
+		bool Image(stringstream& ss_);
 
+		bool FileSet(stringstream& ss_);
 	};
 }

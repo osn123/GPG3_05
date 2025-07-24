@@ -70,7 +70,8 @@ namespace  Game
 			//
 			if (auto ev = EventEngine::Object::Create_Mutex()) {
 				//ev->Set("./data/event/event0000.txt");
-				ev->Set("./data/event/event0002.txt");
+				//ev->Set("./data/event/event0002.txt");
+				ev->Set("./data/event/event0004.txt");
 			}
 		}
 	}

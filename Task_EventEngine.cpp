@@ -174,6 +174,8 @@ namespace  EventEngine
 		else if (hs_ == "flag") { this->EventFlag(ss); }
 		else if (hs_ == "fade_io") { Ev_FadeInOut::Object::CreateOrFadeIn(ss); }
 		else if (hs_ == "label") {}
+		else if (hs_ == "img") { this->Image(ss); }
+		else if (hs_ == "fileset") { this->FileSet(ss); }
 		else  {
 			return false;
 		}

@@ -12,6 +12,8 @@ namespace  GameBG
 	bool  Resource::Initialize()
 	{
 		this->img = DG::Image::Create("./data/Image/GameBG.bmp");
+		//
+		DG::ImageManager::Set("ƒQ[ƒ€–{•ÒBG", this->img);
 		return true;
 	}
 	//-------------------------------------------------------------------
